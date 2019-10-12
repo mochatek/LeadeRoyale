@@ -1,0 +1,229 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Leader Royale</title>
+    <link rel="stylesheet" href="{% static 'leader/assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bitter:400,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700">
+    <link rel="stylesheet" href="{% static 'leader/assets/fonts/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'leader/assets/fonts/ionicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'leader/assets/fonts/typicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'leader/assets/css/styles.min.css' %}">
+</head>
+
+<body style="background-color: transparent;">
+    <div id="header">
+        <div class="col" id="header_col" style="padding: 25px;background-color: #1c4552;"><i class="fas fa-chess-rook" style="height: 44px;width: 42px;font-size: 38px;padding: 0;color: rgb(249,215,32);"></i><label style="font-family: 'Source Sans Pro', sans-serif;font-size: 21px;opacity: 0.72;filter: sepia(21%);margin: 0;color: #ffffff;">POCKET ROYALE</label></div>
+    </div>
+    <div class="text-center d-flex justify-content-center" id="image" style="background: url('{% static 'leader/assets/img/bg.png' %}') no-repeat;background-size: cover;width: 100%;height: 650px;">
+        <div class="jumbotron" style="opacity: 1;background-color: rgba(0,0,0,0);height: 173px;">
+            <h1 class="text-center" style="opacity: 1;">The E-Leader</h1>
+            <p class="text-center">Complete Clan Monitoring for FREE !!</p>
+            <form><input class="border-light shadow form-control d-flex" type="search" name="tag" placeholder="Clan Tag eg:8UVG9LP">
+                {% if message %}
+                <div class="alert alert-danger alert-dismissible"style="margin-top:2%" >
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Error!</strong> Re-Check Clan Tag and Try Again.
+                  </div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+    <div class="modal fade text-center border rounded shadow" role="dialog" tabindex="-1" id="inputModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color: #1c4552;opacity: 0.91;height: 87px;">
+                    <h4 class="modal-title" style="color: #ffffff;">Set Your Clan Requirements</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:white">×</span></button></div>
+                <form class="text-center" style="padding: 4%;"><input class="border rounded-0 border-primary shadow form-control form-control-sm" type="number" placeholder="Member's Donation" id="member" required="" style="padding: 4%;margin: 0;margin-right: 0px;margin-top: 2%;margin-bottom: 2%;">
+                    <input
+                        class="border rounded-0 border-primary shadow form-control form-control-sm" type="number" placeholder="Elder's Donation" id="elder" required="" style="padding: 4%;margin: 0;margin-right: 0px;margin-top: 2%;margin-bottom: 2%;"><input class="border rounded-0 border-primary shadow form-control form-control-sm" type="number" placeholder="Co-Leader's Donation" id="coleader" required="" style="padding: 4%;margin: 0;margin-right: 0px;margin-top: 2%;margin-bottom: 2%;">
+                        <input
+                            class="border rounded-0 border-primary shadow form-control form-control-sm" type="number" placeholder="Leader's Donation" id="leader" required="" style="padding: 4%;margin: 0;margin-right: 0px;margin-top: 2%;margin-bottom: 2%;"><input class="border rounded-0 border-primary shadow form-control form-control-sm" type="number" placeholder="Inactive Limit" id="inactive" required="" style="padding: 4%;margin: 0;margin-right: 0px;margin-top: 2%;margin-bottom: 2%;">
+                            <button
+                                class="btn btn-primary" type="button" style="width: 100%;background-color: #1c4552;" data-dismiss="modal" onclick="filterFunc()">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="controls" style="height: auto;background-color: rgb(255,255,255);color: transparent;">
+        <div class="col" id="control_col" style="padding: 2%;">
+            {% if members %}
+            <div class="table-responsive table-borderless text-center" style="width: 100%;padding: 1%;margin-bottom: 2%;background-color: #37383a;">
+                <table class="table table-bordered table-dark table-sm">
+                    <thead>
+                        <tr></tr>
+                    </thead>
+                    <tbody style="font-weight:bold">
+                        <tr>
+                            <td class="text-center" rowspan="1"><img class="border-dark" style="width: 40px;height: 45px;" src="{{ badge }}"></td>
+                            <td class="text-center" style="font-size: 14px;"><i class="fas fa-trophy" style="color: rgb(249,208,60);"></i>&nbsp;{{ score }}</td>
+                            <td class="text-center" style="font-size: 14px;"><i class="fas fa-users" style="color: rgb(111,194,241);"></i>&nbsp;{{ member_count }}/50</td>
+                            <td class="text-center" style="font-size: 14px;"><i class="typcn typcn-location" style="width: 24px;height: 15px;color: rgb(227,125,118);"></i>&nbsp;{{ location }}</td>
+                            <td class="text-center" rowspan="2" style="height: 67px;"><button class="btn btn-dark text-center bg-dark border rounded-circle border-white shadow" type="button" title="Set Requirements" style="height: 49px;width: 49px;background-color: #5e9289;margin-top: 12px;" data-toggle="modal" data-target="#inputModal"><i class="fas fa-edit" style="font-size: 24px;height: 28px;width: 28px;"></i></button></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center" style="font-size: 18px;">{{ name }}</td>
+                            <td class="text-center" style="font-size: 14px;"><i class="fas fa-trophy" style="color: rgb(235,111,238);"></i>&nbsp;{{ war_trophy }}</td>
+                            <td class="text-center" style="font-size: 14px;"><i class="fas fa-donate" style="color: rgb(124,210,174);"></i>&nbsp;{{ donation }}</td>
+                            <td class="text-center" style="font-size: 14px;"><i class="fas fa-home" style="color: rgb(241,218,136);"></i>&nbsp;{{ type }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+            <form>
+                <select class="border-primary shadow form-control" id="filter" name="filter" onchange="filterFunc()" style="background-color: #1c4552;color: #fcfeff;opacity: 1;"><option value="1" selected="">ALL -- [ All Clanmates ]</option><option value="2">INACTIVE MEMBERS -- [ Inactive Clanmates ]</option><option value="3">DONATIONS -- [ Clanmates who didn't meet Donation Requirements ]</option><option value="4">TROPHY -- [ Clanmates who didn't meet Trophy Requirements ]</option></select>
+                <div
+                    class="table-responsive table-bordered text-center shadow" style="font-size: 12px;">
+                    <table class="table table-striped table-bordered table-hover table-sm" id="tbl">
+                        <thead>
+                            <tr>
+                                <th class="text-center"><i class="fas fa-user" style="width: 15px;height: 15px;"></i>&nbsp;USER</th>
+                                <th class="text-center"><i class="fas fa-address-card" style="width: 15px;height: 15px;"></i>&nbsp;ROLE</th>
+                                <th class="text-center"><i class="fas fa-donate" style="width: 15px;height: 15px;"></i>&nbsp;DONATIONS</th>
+                                <th class="text-center"><i class="fas fa-trophy" style="width: 15px;height: 15px;"></i>&nbsp;TROPHY</th>
+                                <th class="text-center"><i class="fas fa-gamepad" style="width: 15px;height: 15px;"></i>&nbsp;SEEN</th>
+                            </tr>
+                        </thead>
+                        <tbody style="font-weight: bold;color:teal">
+                            {% if members %}
+                            {% for m in members %}
+                            <tr>
+                                <td>{{ m.name }}</td>
+                                <td style="text-transform: uppercase">{{ m.role }}</td>
+                                <td>{{ m.donations }}</td>
+                                <td>{{ m.trophies }}</td>
+                                <td>{{ m.lastSeen }}</td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr><td colspan="5" style="color:red;background-color:lightpink">Clan not Found !</td></tr>
+                            {% endif %}
+                            <tr></tr>
+                        </tbody>
+                    </table>
+        </div>
+        <input type="hidden" name="req_trophy" id="req_trophy" value="{{ req_trophy }}">
+        </form>
+    </div>
+    </div>
+    <div class="social-icons" style="background-color: #1c4552;height: 230px;"><a href="https://github.com/mochatek/"><i class="icon ion-social-github"></i></a>
+        <p style="color: #ffffff;"><br>© 2019 MochaTek. All rights reserved.<br><br></p>
+    </div>
+    <script src="{% static 'leader/assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'leader/assets/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script>
+            function filterFunc()
+            {   
+                var member, elder, coleader, leader, inactive, re_trophy;
+                member = parseInt(document.getElementById("member").value);
+                if (!member){
+                    member = 0;
+                }
+                elder = parseInt(document.getElementById("elder").value);
+                if (!elder){
+                    elder = 0;
+                }
+                coleader = parseInt(document.getElementById("coleader").value);
+                if (!coleader){
+                    coleader = 0;
+                }
+                leader = parseInt(document.getElementById("leader").value);
+                if (!leader){
+                    leader = 0;
+                }
+                inactive = parseInt(document.getElementById("inactive").value);
+                if (!inactive){
+                    inactive = 0;
+                }
+                req_trophy = parseInt(document.getElementById("req_trophy").value);
+                if (!req_trophy){
+                    req_trophy = 0;
+                }
+                var filter, table, tr, i;
+                filter = parseInt(document.getElementById("filter").value);
+                table = document.getElementById("tbl");
+                tr = table.getElementsByTagName("tr");
+                if (filter == 4)
+                {
+                    for (i = 0; i < tr.length; i++)
+                    {
+                        var trophy = tr[i].getElementsByTagName("td")[3];
+                        if (trophy)
+                        {
+                            if (parseInt(trophy.innerHTML) < req_trophy)
+                            {
+                                tr[i].style.display = "";
+                            }
+                            else
+                            {
+                                tr[i].style.display = "none";
+                            }
+                        }       
+                    }
+                }
+                else if (filter == 1)
+                {
+                    for(i = 0; i < tr.length; i++)
+                    {
+                        tr[i].style.display = "";
+                    }
+                }
+                else if(filter == 2)
+                {
+                    for(i = 0; i < tr.length; i++)
+                    {
+                        var days = tr[i].getElementsByTagName("td")[4];
+                        if(days)
+                        {
+                            days = days.innerHTML;
+                            if(isNaN(days.substr(0,days.indexOf(' '))))
+                            {
+                                days = 0;
+                            }
+                            else
+                            {
+                                days = parseInt(days.substr(0,days.indexOf(' ')));
+                            }
+                            if(days >= inactive)
+                            {
+                                tr[i].style.display = "";
+                            }
+                            else
+                            {
+                                tr[i].style.display = "none";
+                            }
+                        }
+                    }
+                }
+                else if (filter == 3)
+                {
+                    for (i = 0; i < tr.length; i++)
+                    {
+                        var role = tr[i].getElementsByTagName("td")[1];
+                        var don = tr[i].getElementsByTagName("td")[2];
+                        if (role)
+                        {
+                            if ((role.innerHTML.toUpperCase() == "MEMBER" && parseInt(don.innerHTML) < member) ||
+                             (role.innerHTML.toUpperCase() == "ELDER" && parseInt(don.innerHTML) < elder) ||
+                             (role.innerHTML.toUpperCase() == "COLEADER" && parseInt(don.innerHTML) < coleader) ||
+                             (role.innerHTML.toUpperCase() == "LEADER" && parseInt(don.innerHTML) < leader))
+                            {
+                                tr[i].style.display = "";
+                            }
+                            else
+                            {
+                                tr[i].style.display = "none";
+                            }
+                        }       
+                    }
+                }
+            }
+            </script>
+</body>
+
+</html>
