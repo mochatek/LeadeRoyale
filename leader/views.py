@@ -34,6 +34,8 @@ def index(request):
                     "location":d["location"]["code"],
                     "type":d["type"]
                     }
+            elif 400 <= response.status_code <500:
+                context["message"] = "Re-Check Clan Tag and Try Again."
             else:
-                context["message"] = True
+                context["message"] = "Service Temporarily Unavailable."
     return render(request,'leader/index.html',context)
